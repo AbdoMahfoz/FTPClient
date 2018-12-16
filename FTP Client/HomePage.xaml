@@ -17,11 +17,13 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.RowSpan="2">
             <Label FontSize="25" Content="Main Menu" FontWeight="Bold" Foreground="White"/>
-            <Button Content="Updaload" x:Name="UploadBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5"/>
+            <Button Content="Upload" x:Name="UploadBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5"/>
             <Button Content="Download" x:Name="DownloadBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5"/>
             <Button Content="Rename" x:Name="RenameBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="RenameBTN_Click"/>
             <Button Content="Delete" x:Name="DeleteBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="DeleteBTN_Click"/>
-           </StackPanel>
+            <Button Content="Create Directory " x:Name="NewDirectoryBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" />
+            <Button Content="RefreshFiles" x:Name="RefreshBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" />
+        </StackPanel>
         <TreeView Grid.Row="0" Grid.Column="1" x:Name="FileExplorer" Background="DarkSlateBlue">
             <TreeView.Resources>
                 <Style  TargetType="{x:Type TreeViewItem}">

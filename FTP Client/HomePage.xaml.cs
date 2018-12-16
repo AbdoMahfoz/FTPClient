@@ -33,7 +33,7 @@ namespace FTP_Client
 
                 //listen For the Expantion event 
                 Dir.Expanded += Folder_Expanded;
-                // Sets the
+                // Sets the mouse Click to select 
                 Dir.MouseLeftButtonUp += FolderClicked;
 
                 //adds the item to the tree view 
@@ -44,6 +44,7 @@ namespace FTP_Client
         private void FolderClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var TreeViewitem = (TreeViewItem)sender;
+            //gets the file path 
             Filepath = (string)TreeViewitem.Tag;
             MessageBox.Show("Item Selected");
         }

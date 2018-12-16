@@ -21,8 +21,8 @@
             <Button Content="Download" x:Name="DownloadBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5"/>
             <Button Content="Rename" x:Name="RenameBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="RenameBTN_Click"/>
             <Button Content="Delete" x:Name="DeleteBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="DeleteBTN_Click"/>
-            <Button Content="Create Directory " x:Name="NewDirectoryBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" />
-            <Button Content="RefreshFiles" x:Name="RefreshBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" />
+            <Button Content="Create Directory " x:Name="NewDirectoryBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="NewDirectoryBTN_Click" />
+            <Button Content="Refresh Files" x:Name="RefreshBTN" Padding="7" FontSize="15" Background="White" Foreground="DodgerBlue" Margin="10,5" Click="RefreshBTN_Click" />
         </StackPanel>
         <TreeView Grid.Row="0" Grid.Column="1" x:Name="FileExplorer" Background="DarkSlateBlue">
             <TreeView.Resources>

@@ -116,5 +116,15 @@ namespace FTP_Client
         {
             //use filePath string ya abdo
         }
+
+        private void RefreshBTN_Click(object sender, RoutedEventArgs e)
+        {
+            //Call window loaded 
+        }
+
+        private void NewDirectoryBTN_Click(object sender, RoutedEventArgs e)
+        {
+            // Call YouFunc 
+        }
     }
 }

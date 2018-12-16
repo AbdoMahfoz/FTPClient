@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTP_Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" Background="DarkCyan">
+        Title="MainWindow" Height="600" Width="800" Background="DarkSlateBlue">
     <Border Padding="100">
         <StackPanel>
-            <Label Content="Welccome to the FTP Client App" FontSize="30" Foreground="White" Margin="0,15"/>
-            <TextBox x:Name="UserTXT" Background="White" Foreground="DarkCyan" FontSize="18" BorderThickness="3" BorderBrush="DarkSeaGreen" Margin="0,15"/>
-            <PasswordBox x:Name="PassTXT" Background="White" Foreground="DarkCyan" FontSize="18" BorderThickness="3" BorderBrush="DarkSeaGreen" Margin="0,15" PasswordChar="*" />
-            <Button x:Name="LoginBTN" Background="White" Foreground="DarkCyan" Content="Login" FontSize="25"  BorderBrush="DarkSeaGreen" BorderThickness="3" Margin="100,30"/>
+            <Label Content="Welcome to the FTP Client App" FontSize="30" Foreground="White" Margin="0,15"/>
+            <TextBox x:Name="UserTXT" Background="White" Text="Enter Username"  Foreground="DarkKhaki" FontSize="18" BorderThickness="3" BorderBrush="DarkKhaki" Margin="0,15"/>
+            <PasswordBox x:Name="PassTXT" Background="White" Password="Enter Username" Foreground="DarkKhaki" FontSize="18" BorderThickness="3" BorderBrush="DarkKhaki" Margin="0,15" PasswordChar="*" />
+            <Button x:Name="LoginBTN" Background="White" Foreground="DarkKhaki" Content="Login" FontSize="25"  BorderBrush="DarkKhaki" BorderThickness="3" Margin="150,30" Click="LoginBTN_Click"/>
         </StackPanel>
     </Border>
 </Window>

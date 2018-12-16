@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FTP_Client
 {
@@ -37,7 +25,7 @@ namespace FTP_Client
         public void AddText(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(UserTXT.Text))
-                UserTXT.Text = "Enter UserName";
+                UserTXT.Text = "Enter Username";
         }
         public void RemovepText(object sender, EventArgs e)
         {
@@ -48,6 +36,26 @@ namespace FTP_Client
         {
             if (string.IsNullOrWhiteSpace(PassTXT.Password))
                 PassTXT.Password = "Enter Password";
+        }
+
+        private void LoginBTN_Click(object sender, RoutedEventArgs e)
+        {
+            //Login(UserTXT.Text, PassTXT.Password)                                             OVER RIDE ya abdoo
+            if (true)
+            {
+                HomePage x = new HomePage();
+                x.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("SAkltak omak ya 7omar");      //  OVER RIDE YA ABDOOOOOOOOOO
+            }
+        }
+
+        private bool Login(string text, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

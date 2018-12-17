@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Threading.Tasks;
 
 namespace FTP_Client
 {
@@ -11,6 +11,7 @@ namespace FTP_Client
     public partial class HomePage : Window
     {
         public string Filepath { get; set; }
+        public static string PromptData { get; set; }
         public HomePage()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace FTP_Client
                 Dir.Tag = name;
 
                 //adds dummy item  
-                if(!name.Contains("."))
+                if (!name.Contains("."))
                     Dir.Items.Add(null);
 
                 //listen For the Expantion event 
@@ -80,7 +81,7 @@ namespace FTP_Client
                 //sets the path of the folder 
                 SubItems.Tag = FullPath + "/" + Folder;
                 //Dummy item
-                if(!Folder.Contains("."))
+                if (!Folder.Contains("."))
                     SubItems.Items.Add(null);
 
                 SubItems.Expanded += Folder_Expanded;
@@ -91,7 +92,7 @@ namespace FTP_Client
             }
         }
 
-        
+
         public List<string> GetDirectories(string fullPath)
         {
             List<string> s = null;
@@ -101,7 +102,7 @@ namespace FTP_Client
             }).Wait();
             return s;
         }
-        
+
         public List<string> GetRootDirectory()
         {
             List<string> s = null;
@@ -114,6 +115,10 @@ namespace FTP_Client
 
         private async void RenameBTN_Click(object sender, RoutedEventArgs e)
         {
+            DialogWindow Prompt = new DialogWindow();
+            Prompt.Show();
+
+            // Use PromptData String
             await Gateway.Rename(Filepath, "Dummy");
             RefreshBTN_Click(null, null);
         }
@@ -132,6 +137,10 @@ namespace FTP_Client
 
         private async void NewDirectoryBTN_Click(object sender, RoutedEventArgs e)
         {
+            DialogWindow Prompt = new DialogWindow();
+            Prompt.Show();
+
+            // Use PromptData String
             await Gateway.CreateDirectory(Filepath, "Dummy");
             RefreshBTN_Click(null, null);
         }

@@ -48,7 +48,8 @@ namespace FTP_Client
         {
             var TreeViewitem = (TreeViewItem)sender;
             //gets the file path 
-            Filepath = (string)TreeViewitem.Tag;
+            if(((string)TreeViewitem.Tag).Contains("."))
+                Filepath = (string)TreeViewitem.Tag;
         }
 
         private void Folder_Expanded(object sender, RoutedEventArgs e)
@@ -115,10 +116,10 @@ namespace FTP_Client
         private async void RenameBTN_Click(object sender, RoutedEventArgs e)
         {
             DialogWindow Prompt = new DialogWindow();
-            Prompt.Show();
+            Prompt.ShowDialog();
 
             // Use PromptData String
-            await Gateway.Rename(Filepath, "Dummy");
+            await Gateway.Rename(Filepath, PromptData);
             RefreshBTN_Click(null, null);
         }
 
@@ -140,7 +141,7 @@ namespace FTP_Client
             Prompt.Show();
 
             // Use PromptData String
-            await Gateway.CreateDirectory(Filepath, "Dummy");
+            await Gateway.CreateDirectory(Filepath, PromptData);
             RefreshBTN_Click(null, null);
         }
 

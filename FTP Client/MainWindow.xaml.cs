@@ -41,7 +41,7 @@ namespace FTP_Client
         private async void LoginBTN_Click(object sender, RoutedEventArgs e)
         {
             LoginBTN.IsEnabled = false;
-            if(!await Gateway.Connect("10.0.0.210", 2121))
+            if(!await Gateway.Connect(Ip.Text, 2121))
             {
                 MessageBox.Show("Destination host unreachable");
             }
@@ -49,8 +49,9 @@ namespace FTP_Client
             {
                 await Gateway.InitiateActiveTransmission();
                 HomePage x = new HomePage();
-                x.Show();
-                this.Hide();
+                Hide();
+                x.ShowDialog();
+                Close();
             }
             else
             {

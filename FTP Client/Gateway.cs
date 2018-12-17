@@ -100,12 +100,6 @@ namespace FTP_Client
             List<byte> addressBytes = new List<byte>(6);
             addressBytes.AddRange(((IPEndPoint)Control.LocalEndPoint).Address.GetAddressBytes());
             addressBytes.AddRange(BitConverter.GetBytes((short)((IPEndPoint)Data.LocalEndPoint).Port).Reverse());
-            /*
-            addressBytes[0] = 192;
-            addressBytes[1] = 168;
-            addressBytes[2] = 43;
-            addressBytes[3] = 205;
-            */
             string Message = "";
             foreach(byte b in addressBytes)
             {

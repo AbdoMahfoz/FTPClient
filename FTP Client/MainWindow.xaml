@@ -11,6 +11,7 @@
             <Label Content="Welcome to the FTP Client App" FontSize="30" Foreground="White" Margin="0,15"/>
             <TextBox x:Name="UserTXT" Background="White" Text="Enter Username"  Foreground="DarkKhaki" FontSize="18" BorderThickness="3" BorderBrush="DarkKhaki" Margin="0,15"/>
             <PasswordBox x:Name="PassTXT" Background="White" Password="Enter Username" Foreground="DarkKhaki" FontSize="18" BorderThickness="3" BorderBrush="DarkKhaki" Margin="0,15" PasswordChar="*" />
+            <TextBox x:Name="Ip" Background="White" Text="Enter IP Address"  Foreground="DarkKhaki" FontSize="18" BorderThickness="3" BorderBrush="DarkKhaki" Margin="0,15"/>
             <Button x:Name="LoginBTN" Background="White" Foreground="DarkKhaki" Content="Login" FontSize="25"  BorderBrush="DarkKhaki" BorderThickness="3" Margin="150,30" Click="LoginBTN_Click"/>
         </StackPanel>
     </Border>

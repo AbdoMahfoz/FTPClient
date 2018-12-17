@@ -92,7 +92,6 @@ namespace FTP_Client
             }
         }
 
-
         public List<string> GetDirectories(string fullPath)
         {
             List<string> s = null;

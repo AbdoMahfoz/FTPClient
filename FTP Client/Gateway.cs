@@ -13,7 +13,6 @@ namespace FTP_Client
 {
     static class Gateway
     {
-
         enum ExpectedReply {
             PositiveIncomplete = 1  , // Command Accepted, await further input from server
             PositiveComplete = 2,   //Command accepted, enter another command
@@ -117,11 +116,22 @@ namespace FTP_Client
                 SendCommand("PORT " + Message.Substring(0, Message.Length - 1), ExpectedReply.PositiveComplete);
             });
         }
-        static async Task NavigateToDirectory(string FullPath)
+        static async Task NavigateToDirectory(string FullPath, bool isFilePath)
         {
             await Task.Run(() =>
             {
                 SendCommand("CWD /", ExpectedReply.PositiveComplete); // change working directory
+                if(isFilePath)
+                {
+                    if(!FullPath.Contains('/'))
+                    {
+                        FullPath = "";
+                    }
+                    else
+                    {
+                        FullPath = FullPath.Substring(0, FullPath.LastIndexOf('/'));
+                    }
+                }
                 string[] directorires = FullPath.Split('/');
                 foreach (string d in directorires)
                 {
@@ -131,7 +141,7 @@ namespace FTP_Client
         }
         static public async Task<string[]> GetDirectoriesAndFiles(string s)
         {
-            await NavigateToDirectory(s);
+            await NavigateToDirectory(s, false);
             string res = "";
             await Task.Run(() =>
             {
@@ -186,8 +196,9 @@ namespace FTP_Client
                 FileName = s.Substring(s.LastIndexOf('/') + 1) 
             };
             saveFileDialog.ShowDialog();
-            await NavigateToDirectory(s.Substring(0, s.LastIndexOf('/')));
+            await NavigateToDirectory(s, true);
             Socket socket = null;
+            Task t = null;
             if (isPassive)
             {
                 await Task.Run(() =>
@@ -199,7 +210,7 @@ namespace FTP_Client
             }
             else
             {
-                await Task.Run(() =>
+                t = Task.Run(() =>
                 {
                     socket = Data.Accept();
                 });
@@ -209,6 +220,7 @@ namespace FTP_Client
             {
                 SendCommand("TYPE I", ExpectedReply.PositiveComplete);
                 SendCommand("RETR " + s.Substring(s.LastIndexOf('/') + 1), ExpectedReply.PositiveIncomplete);
+                t.Wait();
                 FileStream file = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write); 
                 int n = 0;
                 Stopwatch stopwatch = new Stopwatch();
@@ -234,9 +246,55 @@ namespace FTP_Client
             socket.Close();
             ReceiveReply(ExpectedReply.PositiveComplete);
         }
+        static public async Task UploadFile(string ServerPath)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            string fileName = openFileDialog.FileName;
+            FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            await NavigateToDirectory(ServerPath, false);
+            Socket socket = null;
+            Task t = null;
+            if (isPassive)
+            {
+                await Task.Run(() =>
+                {
+                    Data = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    Data.Connect(new IPEndPoint(PassiveAddress, PassivePort));
+                    socket = Data;
+                });
+            }
+            else
+            {
+                t = Task.Run(() =>
+                {
+                    socket = Data.Accept();
+                });
+            }
+            await Task.Run(() =>
+            {
+                SendCommand("TYPE I", ExpectedReply.PositiveComplete);
+                SendCommand("STOR " + fileName.Substring(fileName.LastIndexOf("\\") + 1), ExpectedReply.PositiveIncomplete);
+                if(t != null)
+                {
+                    t.Wait();
+                }
+                int i = 0;
+                while (i < file.Length)
+                {
+                    int n = (int)Math.Min(1024, file.Length - i);
+                    file.Read(buffer, 0, n);
+                    socket.Send(buffer, 0, n, SocketFlags.None);
+                    i += n;
+                }
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+                ReceiveReply(ExpectedReply.PositiveComplete);
+            });
+        }
         static public async Task Rename(string Path, string NewName)
         {
-            await NavigateToDirectory(Path.Substring(0, Path.LastIndexOf('/')));
+            await NavigateToDirectory(Path, true);
             await Task.Run(() =>
             {
                 SendCommand("RNFR " + Path.Substring(Path.LastIndexOf('/') + 1), ExpectedReply.PositiveAwatingFurtherInput);
@@ -245,7 +303,7 @@ namespace FTP_Client
         }
         static public async Task Delete(string Path)
         {
-            await NavigateToDirectory(Path.Substring(0, Path.LastIndexOf('/')));
+            await NavigateToDirectory(Path, true);
             await Task.Run(() =>
             {
                 SendCommand("DELE " + Path.Substring(Path.LastIndexOf('/') + 1), ExpectedReply.PositiveComplete);
@@ -253,7 +311,7 @@ namespace FTP_Client
         }
         static public async Task CreateDirectory(string Path, string DirectoryName)
         {
-            await NavigateToDirectory(Path);
+            await NavigateToDirectory(Path, false);
             await Task.Run(() => SendCommand("MKD " + DirectoryName, ExpectedReply.PositiveComplete));
         }
     }

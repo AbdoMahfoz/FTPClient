@@ -84,7 +84,7 @@ namespace FTP_Client
                     SubItems.Items.Add(null);
 
                 SubItems.Expanded += Folder_Expanded;
-                SubItems.PreviewMouseLeftButtonUp += FolderClicked;
+                SubItems.MouseLeftButtonUp += FolderClicked;
 
                 //adds this to the parrent
                 TreeItem.Items.Add(SubItems);
@@ -112,9 +112,10 @@ namespace FTP_Client
             return s;
         }
 
-        private void RenameBTN_Click(object sender, RoutedEventArgs e)
+        private async void RenameBTN_Click(object sender, RoutedEventArgs e)
         {
-            
+            await Gateway.Rename(Filepath, "Dummy");
+            RefreshBTN_Click(null, null);
         }
 
         private async void DeleteBTN_Click(object sender, RoutedEventArgs e)
@@ -139,6 +140,13 @@ namespace FTP_Client
         {
             Task.Run(async () => await Gateway.DownloadFile(Filepath)).Wait();
             MessageBox.Show("File Downloaded Successfully");
+        }
+
+        private void UploadBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(async () => await Gateway.UploadFile(Filepath)).Wait();
+            MessageBox.Show("File Uploaded Successfully");
+            RefreshBTN_Click(null, null);
         }
     }
 }

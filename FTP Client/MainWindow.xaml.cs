@@ -38,24 +38,25 @@ namespace FTP_Client
                 PassTXT.Password = "Enter Password";
         }
 
-        private void LoginBTN_Click(object sender, RoutedEventArgs e)
+        private async void LoginBTN_Click(object sender, RoutedEventArgs e)
         {
-            //Login(UserTXT.Text, PassTXT.Password)                                             OVER RIDE ya abdoo
-            if (true)
+            LoginBTN.IsEnabled = false;
+            if(!await Gateway.Connect("10.0.0.210", 2121))
             {
+                MessageBox.Show("Destination host unreachable");
+            }
+            if (await Gateway.Login(UserTXT.Text, PassTXT.Password))
+            {
+                await Gateway.InitiateActiveTransmission();
                 HomePage x = new HomePage();
                 x.Show();
                 this.Hide();
             }
             else
             {
-                MessageBox.Show("SAkltak omak ya 7omar");      //  OVER RIDE YA ABDOOOOOOOOOO
+                MessageBox.Show("Invalid username or password");
             }
-        }
-
-        private bool Login(string text, string password)
-        {
-            throw new NotImplementedException();
+            LoginBTN.IsEnabled = true;
         }
     }
 }

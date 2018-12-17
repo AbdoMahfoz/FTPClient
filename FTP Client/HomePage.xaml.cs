@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Threading.Tasks;
 
 namespace FTP_Client
 {
@@ -28,8 +29,9 @@ namespace FTP_Client
                 //Sets the File Path 
                 Dir.Tag = name;
 
-                //adds dummy item   
-                Dir.Items.Add(null);
+                //adds dummy item  
+                if(!name.Contains("."))
+                    Dir.Items.Add(null);
 
                 //listen For the Expantion event 
                 Dir.Expanded += Folder_Expanded;
@@ -46,7 +48,6 @@ namespace FTP_Client
             var TreeViewitem = (TreeViewItem)sender;
             //gets the file path 
             Filepath = (string)TreeViewitem.Tag;
-            MessageBox.Show("Item Selected");
         }
 
         private void Folder_Expanded(object sender, RoutedEventArgs e)
@@ -79,52 +80,65 @@ namespace FTP_Client
                 //sets the path of the folder 
                 SubItems.Tag = FullPath + "/" + Folder;
                 //Dummy item
-                SubItems.Items.Add(null);
+                if(!Folder.Contains("."))
+                    SubItems.Items.Add(null);
 
                 SubItems.Expanded += Folder_Expanded;
+                SubItems.PreviewMouseLeftButtonUp += FolderClicked;
 
                 //adds this to the parrent
                 TreeItem.Items.Add(SubItems);
             }
         }
 
-        //Over Ride ya Abdo
+        
         public List<string> GetDirectories(string fullPath)
         {
-            List<string> Root = new List<string>();
-            Root.Add("Taban Lak Part 2  ");
-            Root.Add("Ya 3rbeed Ya Sakeeeeer");
-            Root.Add("Sakalatak Omak we 3ametak ");
-            return Root;
+            List<string> s = null;
+            Task.Run(async () =>
+            {
+                s = new List<string>(await Gateway.GetDirectoriesAndFiles(fullPath));
+            }).Wait();
+            return s;
         }
-        //override ya abdo
+        
         public List<string> GetRootDirectory()
         {
-            List<string> Root = new List<string>();
-            Root.Add("Taban Lak");
-            Root.Add("Ya 3rbeed");
-            Root.Add("Sakalatak Omak ");
-            return Root;
+            List<string> s = null;
+            Task.Run(async () =>
+            {
+                s = new List<string>(await Gateway.GetDirectoriesAndFiles(""));
+            }).Wait();
+            return s;
         }
 
         private void RenameBTN_Click(object sender, RoutedEventArgs e)
         {
-            //use filePath string ya abdo
+            
         }
 
-        private void DeleteBTN_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBTN_Click(object sender, RoutedEventArgs e)
         {
-            //use filePath string ya abdo
+            await Gateway.Delete(Filepath);
+            RefreshBTN_Click(null, null);
         }
 
         private void RefreshBTN_Click(object sender, RoutedEventArgs e)
         {
-            //Call window loaded 
+            FileExplorer.Items.Clear();
+            Window_Loaded(null, null);
         }
 
-        private void NewDirectoryBTN_Click(object sender, RoutedEventArgs e)
+        private async void NewDirectoryBTN_Click(object sender, RoutedEventArgs e)
         {
-            // Call YouFunc 
+            await Gateway.CreateDirectory(Filepath, "Dummy");
+            RefreshBTN_Click(null, null);
+        }
+
+        private void DownloadBTN_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(async () => await Gateway.DownloadFile(Filepath)).Wait();
+            MessageBox.Show("File Downloaded Successfully");
         }
     }
 }
